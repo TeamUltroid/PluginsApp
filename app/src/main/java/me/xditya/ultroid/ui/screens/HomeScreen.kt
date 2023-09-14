@@ -32,7 +32,7 @@ import compose.icons.SimpleIcons
 import compose.icons.simpleicons.Github
 import compose.icons.simpleicons.Telegram
 import me.xditya.ultroid.R
-import me.xditya.ultroid.ui.CustomBottomBar
+import me.xditya.ultroid.components.CustomBottomBar
 
 fun linkToWebpage(context: Context, uri: String) {
     val openURL = Intent(Intent.ACTION_VIEW)

@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import me.xditya.ultroid.ui.CustomBottomBar
+import me.xditya.ultroid.components.CustomBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
