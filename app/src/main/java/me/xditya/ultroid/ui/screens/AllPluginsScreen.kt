@@ -1,5 +1,6 @@
 package me.xditya.ultroid.ui.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,13 +39,10 @@ import org.json.JSONObject
 
 @Composable
 fun SegmentedButton(
-    options: List<String>,
-    selectedOption: String,
-    onOptionSelected: (String) -> Unit
+    options: List<String>, selectedOption: String, onOptionSelected: (String) -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
     ) {
         options.forEach { option ->
             val isSelected = option == selectedOption
@@ -64,27 +63,23 @@ fun SegmentedButton(
                 )
             ) {
                 Text(
-                    text = option,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1
+                    text = option, style = MaterialTheme.typography.bodyMedium, maxLines = 1
                 )
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun AllPluginsScreen(navController: NavController) {
     Scaffold(topBar = {
         CenterAlignedTopAppBar(
             title = { Text(text = "All plugins") },
         )
-    },
-        bottomBar = {
-            CustomBottomBar(navController = navController)
-        }
-    ) {
+    }, bottomBar = {
+        CustomBottomBar(navController = navController)
+    }) {
         var selectedOption by remember { mutableStateOf(AppData.currentOption) }
         val options = listOf("all", "inline", "commands")
 
@@ -93,9 +88,9 @@ fun AllPluginsScreen(navController: NavController) {
             val filteredItems = remember(pluginData, selectedOption) {
                 filterPlugins(pluginData, selectedOption)
             }
-            LazyColumn(
-                content = {
-                    item {
+            LazyColumn(content = {
+                stickyHeader {
+                    Card {
                         Column(
                             modifier = Modifier.padding(8.dp),
                         ) {
@@ -104,59 +99,47 @@ fun AllPluginsScreen(navController: NavController) {
                                 style = MaterialTheme.typography.bodyLarge,
                             )
                         }
-
-                    }
-                    item {
-                        SegmentedButton(
-                            options = options,
+                        SegmentedButton(options = options,
                             selectedOption = selectedOption,
                             onOptionSelected = { selectedOpt ->
                                 selectedOption = selectedOpt
                                 AppData.currentOption = selectedOpt
                             })
                     }
-                    items(filteredItems.size) { index ->
-                        val parsedData = filteredItems[index]
-                        val details = JSONObject(parsedData.getString("details"))
-                        val desc: String = try {
-                            (details.getString("description") + " • ")
-                        } catch (e: Exception) {
-                            ""
-                        }
-                        val cmds: String = try {
-                            " • ${JSONObject(details.getString("cmds")).length()} commands."
-                        } catch (e: Exception) {
-                            ""
-                        }
-                        val subText =
-                            desc + ("v" + (details.getString("version")
-                                ?: "1.0")) + cmds
-                        ListItem(
-                            leadingContent = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Star,
-                                    contentDescription = "leading content"
-                                )
-                            },
-                            headlineText = {
-                                Text(text = parsedData.getString("name"))
-                            },
-                            supportingText = {
-                                Text(text = subText)
-                            },
-                            trailingContent = {
-                                Icon(
-                                    imageVector = Icons.Rounded.KeyboardArrowRight,
-                                    contentDescription = "click arrow"
-                                )
-                            },
-                            modifier = Modifier.clickable {
-                                navController.navigate("plugin/${parsedData.getString("name")}")
-                            }
-                        )
-                        Divider()
+                }
+                items(filteredItems.size) { index ->
+                    val parsedData = filteredItems[index]
+                    val details = JSONObject(parsedData.getString("details"))
+                    val desc: String = try {
+                        (details.getString("description") + " • ")
+                    } catch (e: Exception) {
+                        ""
                     }
-                })
+                    val cmds: String = try {
+                        " • ${JSONObject(details.getString("cmds")).length()} commands."
+                    } catch (e: Exception) {
+                        ""
+                    }
+                    val subText = desc + ("v" + (details.getString("version") ?: "1.0")) + cmds
+                    ListItem(leadingContent = {
+                        Icon(
+                            imageVector = Icons.Rounded.Star, contentDescription = "leading content"
+                        )
+                    }, headlineText = {
+                        Text(text = parsedData.getString("name"))
+                    }, supportingText = {
+                        Text(text = subText)
+                    }, trailingContent = {
+                        Icon(
+                            imageVector = Icons.Rounded.KeyboardArrowRight,
+                            contentDescription = "click arrow"
+                        )
+                    }, modifier = Modifier.clickable {
+                        navController.navigate("plugin/${parsedData.getString("name")}")
+                    })
+                    Divider()
+                }
+            })
         }
     }
 }
@@ -168,27 +151,25 @@ private fun filterPlugins(pluginData: JSONArray, selectedOption: String): List<J
         }
 
         "inline" -> {
-            (0 until pluginData.length()).map { pluginData.getJSONObject(it) }
-                .filter { plugin ->
-                    val details = JSONObject(plugin.getString("details"))
-                    try {
-                        details.getBoolean("inline")
-                    } catch (e: Exception) {
-                        false
-                    }
+            (0 until pluginData.length()).map { pluginData.getJSONObject(it) }.filter { plugin ->
+                val details = JSONObject(plugin.getString("details"))
+                try {
+                    details.getBoolean("inline")
+                } catch (e: Exception) {
+                    false
                 }
+            }
         }
 
         "commands" -> {
-            (0 until pluginData.length()).map { pluginData.getJSONObject(it) }
-                .filter { plugin ->
-                    val details = JSONObject(plugin.getString("details"))
-                    try {
-                        details.getBoolean("inline")
-                    } catch (e: Exception) {
-                        true
-                    }
+            (0 until pluginData.length()).map { pluginData.getJSONObject(it) }.filter { plugin ->
+                val details = JSONObject(plugin.getString("details"))
+                try {
+                    details.getBoolean("inline")
+                } catch (e: Exception) {
+                    true
                 }
+            }
         }
 
         else -> emptyList()
