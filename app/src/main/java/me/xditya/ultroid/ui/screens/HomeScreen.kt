@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -55,8 +56,12 @@ fun HomeScreen(navController: NavController) {
     ) {
         Surface(modifier = Modifier.padding(it)) {
             Column(modifier = Modifier.padding(16.dp)) {
+                var logo = R.drawable.ultroid_logo
+                if (!isSystemInDarkTheme()) {
+                    logo = R.drawable.ultroid_logo_dark
+                }
                 Image(
-                    painter = painterResource(id = R.drawable.ultroid_logo),
+                    painter = painterResource(id = logo),
                     contentDescription = "logo",
                     modifier = Modifier
                         .size(400.dp)
