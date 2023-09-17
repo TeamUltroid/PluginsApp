@@ -44,7 +44,6 @@ fun linkToWebpage(context: Context, uri: String) {
 @Composable
 fun HomeScreen(navController: NavController) {
     val ctx = LocalContext.current
-
     Scaffold(topBar = {
         CenterAlignedTopAppBar(
             title = { Text(text = "Ultroid") },

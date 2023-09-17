@@ -13,17 +13,19 @@ import me.xditya.ultroid.ui.screens.SearchScreen
 
 @Composable
 fun Navigation(navController: NavHostController) {
+
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             HomeScreen(navController)
         }
-        composable("search") {
+        composable(route = "search") {
             SearchScreen(navController)
         }
         composable("all_plugins") {
             AllPluginsScreen(navController)
         }
-        composable("plugin/{name}",
+        composable(
+            "plugin/{name}",
             arguments = listOf(navArgument("name") { type = NavType.StringType })
         ) { backStackEntry ->
             val name = backStackEntry.arguments?.getString("name")
