@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import me.xditya.ultroid.components.CustomBottomBar
 import me.xditya.ultroid.helpers.AppData
@@ -63,7 +64,9 @@ fun SegmentedButton(
                 )
             ) {
                 Text(
-                    text = option, style = MaterialTheme.typography.bodyMedium, maxLines = 1
+                    text = option,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
+                    maxLines = 1
                 )
             }
         }
@@ -90,7 +93,10 @@ fun AllPluginsScreen(navController: NavController) {
             }
             LazyColumn(content = {
                 stickyHeader {
-                    Card {
+                    Card(
+                        Modifier
+                            .padding(start = 8.dp, end = 8.dp)
+                    ) {
                         Column(
                             modifier = Modifier.padding(8.dp),
                         ) {
