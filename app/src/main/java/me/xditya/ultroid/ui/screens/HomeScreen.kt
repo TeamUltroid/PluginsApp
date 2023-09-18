@@ -8,6 +8,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -55,7 +56,9 @@ fun HomeScreen(navController: NavController) {
         }
     ) {
         Surface(modifier = Modifier.padding(it)) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize()) {
                 var logo = R.drawable.ultroid_logo
                 if (!isSystemInDarkTheme()) {
                     logo = R.drawable.ultroid_logo_dark
