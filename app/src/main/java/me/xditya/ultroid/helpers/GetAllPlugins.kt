@@ -20,7 +20,6 @@ fun getAllPlugins(ctx: Context, result: MutableState<String>) {
                 try {
                     val jsonObject = JSONObject(response)
                     val pluginData = jsonObject.getJSONArray("plugins")
-//                    println(JSONObject(pluginData[0].toString()).getString("details"))
                     result.value = pluginData.toString()
                 } catch (e: JSONException) {
                     e.printStackTrace()
