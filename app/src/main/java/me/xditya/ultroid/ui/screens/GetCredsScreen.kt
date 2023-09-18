@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import me.xditya.ultroid.R
+import me.xditya.ultroid.helpers.AppData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +50,7 @@ fun GetCredsScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-            ){
+            ) {
                 var logo = R.drawable.ultroid_logo
                 if (!isSystemInDarkTheme()) {
                     logo = R.drawable.ultroid_logo_dark
@@ -92,6 +93,7 @@ fun GetCredsScreen(navController: NavController) {
                                 "TheUltroidCreds",
                                 android.content.Context.MODE_PRIVATE
                             )
+                            AppData.botUsername = botUname
                             sharedPreferences.edit().putString("botUsername", botUname).apply()
                             navController.navigate("home")
                         } else {

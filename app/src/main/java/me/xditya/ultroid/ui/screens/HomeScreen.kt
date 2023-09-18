@@ -87,7 +87,7 @@ fun HomeScreen(navController: NavController) {
                 showDialog = false
                 AppData.botUsername = ""
                 val savedPrefs = ctx.getSharedPreferences("TheUltroidCreds", Context.MODE_PRIVATE)
-                savedPrefs.edit().putString("botUsername", "").apply()
+                savedPrefs.edit().remove("botUsername").apply()
                 navController.navigate("get_creds_page")
             })
         }
