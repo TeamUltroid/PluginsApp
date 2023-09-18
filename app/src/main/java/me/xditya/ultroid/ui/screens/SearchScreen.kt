@@ -55,6 +55,7 @@ fun SearchBar(
             fontSize = 18.sp,
         ),
         singleLine = true,
+        maxLines = 1,
         label = {
             Text(text = "Enter a plugin name")
         },

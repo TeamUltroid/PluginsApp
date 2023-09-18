@@ -151,7 +151,7 @@ fun PluginInfoScreen(
                         ) {
                             val webIntentInstallLink = Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("tg://resolve?domain=xdityaBot&start=install_$name")
+                                Uri.parse("tg://resolve?domain=${AppData.botUsername}&start=install_$name")
                             )
                             FilledTonalButton(
                                 onClick = {
