@@ -99,6 +99,9 @@ fun HomeScreen(navController: NavController) {
     }, bottomBar = {
         CustomBottomBar(navController = navController)
     }) {
+        if (AppData.botUsername == "") {
+            navController.navigate("get_creds_page")
+        }
         Surface(modifier = Modifier.padding(it)) {
             Column(
                 modifier = Modifier
